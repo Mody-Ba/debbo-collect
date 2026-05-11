@@ -1,11 +1,9 @@
 package com.DebboCollect.DebboCollect.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +12,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+
 public class Projet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +26,11 @@ public class Projet {
 
     private String zoneGeographique;
 
-    private Date dateDebut;
+    private LocalDate dateDebut;
 
-    private Date dateFin;
+    private LocalDate dateFin;
+
+    private String type;
 
     @ManyToOne
     private Utilisateur superviseur;

@@ -1,12 +1,9 @@
 package com.DebboCollect.DebboCollect.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -14,25 +11,22 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class Collecte {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date date;
+    private LocalDate dateCollecte;
 
-    private String statut;
-
-    private double latitude;
-
-    private double longitude;
-
-    @ManyToOne
-    private Projet projet;
+    private String localisation;
 
     @ManyToOne
     private Utilisateur enqueteur;
+
+    @ManyToOne
+    private Projet projet;
 
     @OneToMany(mappedBy = "collecte")
     private List<Reponse> reponses;

@@ -5,6 +5,7 @@ import com.DebboCollect.DebboCollect.Model.UtilisateurRequest;
 import com.DebboCollect.DebboCollect.Model.UtilisateurResponse;
 import com.DebboCollect.DebboCollect.mappers.UtilisateurMapper;
 import com.DebboCollect.DebboCollect.services.UtilisateurService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class UtilisateurController {
     }
 
     @PostMapping
-    public UtilisateurResponse createUser(@RequestBody UtilisateurRequest request) {
+    public UtilisateurResponse createUser(@Valid @RequestBody UtilisateurRequest request) {
 
         UtilisateurModel model = UtilisateurMapper.toModel(request);
 

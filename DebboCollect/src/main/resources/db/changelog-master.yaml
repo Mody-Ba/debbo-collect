@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - include:
+      file: changelogs/001-init-db.sql
+      relativeToChangelogFile: true
+
+  - include:
+       file: changelogs/002-insert-utilisateur.sql
+       relativeToChangelogFile: true
