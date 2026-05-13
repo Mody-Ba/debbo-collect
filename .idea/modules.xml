@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/DebboCollect.iml" filepath="$PROJECT_DIR$/.idea/DebboCollect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DebboCollect/DebboCollect.iml" filepath="$PROJECT_DIR$/DebboCollect/DebboCollect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/debbo-collect.iml" filepath="$PROJECT_DIR$/.idea/debbo-collect.iml" />
     </modules>
   </component>
 </project>
