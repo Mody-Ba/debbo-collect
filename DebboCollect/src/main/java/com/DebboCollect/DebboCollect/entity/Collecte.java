@@ -22,6 +22,10 @@ public class Collecte {
 
     private String localisation;
 
+    private Double latitude;
+
+    private Double longitude;
+
     @ManyToOne
     private Utilisateur enqueteur;
 

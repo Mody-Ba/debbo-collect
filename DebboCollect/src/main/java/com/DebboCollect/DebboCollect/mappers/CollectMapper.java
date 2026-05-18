@@ -17,6 +17,8 @@ public class CollectMapper {
         return Collecte.builder()
                 .dateCollecte(request.getDateCollecte())
                 .localisation(request.getLocalisation())
+                .latitude(request.getLatitude())
+                .longitude(request.getLongitude())
                 .enqueteur(enqueteur)
                 .projet(projet)
                 .build();
@@ -28,6 +30,8 @@ public class CollectMapper {
                 .id(collecte.getId())
                 .dateCollecte(collecte.getDateCollecte())
                 .localisation(collecte.getLocalisation())
+                .latitude(collecte.getLatitude())
+                .longitude(collecte.getLongitude())
                 .enqueteurId(collecte.getEnqueteur().getId())
                 .projetId(collecte.getProjet().getId())
                 .build();
@@ -39,6 +43,8 @@ public class CollectMapper {
                 .id(collecte.getId())
                 .dateCollecte(collecte.getDateCollecte())
                 .localisation(collecte.getLocalisation())
+                .latitude(collecte.getLatitude())
+                .longitude(collecte.getLongitude())
                 .enqueteurId(collecte.getEnqueteur().getId())
                 .projetId(collecte.getProjet().getId())
                 .build();

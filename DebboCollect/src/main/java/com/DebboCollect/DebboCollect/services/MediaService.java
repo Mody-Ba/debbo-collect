@@ -2,6 +2,7 @@ package com.DebboCollect.DebboCollect.services;
 
 import com.DebboCollect.DebboCollect.Model.MediaRequest;
 import com.DebboCollect.DebboCollect.Model.MediaResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public interface MediaService {
     MediaResponse modifierMedia(Long id, MediaRequest request);
 
     void supprimerMedia(Long id);
+    String uploadFile(MultipartFile file);
 }

@@ -9,7 +9,11 @@ import com.DebboCollect.DebboCollect.repository.MediaRepository;
 import com.DebboCollect.DebboCollect.repository.ReponseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -73,5 +77,25 @@ public class MediaServiceImp implements MediaService {
     public void supprimerMedia(Long id) {
 
         mediaRepository.deleteById(id);
+    }
+    @Override
+    public String uploadFile(MultipartFile file) {
+
+        try {
+
+            String fileName = file.getOriginalFilename();
+
+            Path path = Paths.get("uploads/" + fileName);
+
+            Files.createDirectories(path.getParent());
+
+            Files.write(path, file.getBytes());
+
+            return "Fichier uploadé : " + fileName;
+
+        } catch (Exception e) {
+
+            throw new RuntimeException("Erreur upload fichier");
+        }
     }
 }

@@ -161,3 +161,10 @@ CREATE TABLE message
         FOREIGN KEY (destinataire_id)
             REFERENCES utilisateur(id)
 );
+-- changeset Mody:add-geolocalisation-to-collecte
+
+ALTER TABLE collecte
+    ADD COLUMN latitude DOUBLE PRECISION;
+
+ALTER TABLE collecte
+    ADD COLUMN longitude DOUBLE PRECISION;

@@ -15,6 +15,10 @@ public class CollectRequest {
     private LocalDate dateCollecte;
     @NotNull(message = "La localisation est obligatoire")
     private String localisation;
+
+    private Double latitude;
+
+    private Double longitude;
     @NotNull(message = "L enqueteur est obligatoire")
     private Long enqueteurId;
     @NotNull(message = "Le projet est obligatoire")
