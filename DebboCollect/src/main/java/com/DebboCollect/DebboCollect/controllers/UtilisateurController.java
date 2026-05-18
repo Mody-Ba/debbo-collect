@@ -6,6 +6,7 @@ import com.DebboCollect.DebboCollect.Model.UtilisateurResponse;
 import com.DebboCollect.DebboCollect.mappers.UtilisateurMapper;
 import com.DebboCollect.DebboCollect.services.UtilisateurService;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class UtilisateurController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public UtilisateurResponse createUser(@Valid @RequestBody UtilisateurRequest request) {
 
         UtilisateurModel model = UtilisateurMapper.toModel(request);
@@ -32,6 +34,7 @@ public class UtilisateurController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UtilisateurResponse> getAllUsers() {
 
         return utilisateurService.getAllUsers()
@@ -41,6 +44,7 @@ public class UtilisateurController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public UtilisateurResponse getUserById(@PathVariable Long id) {
 
         UtilisateurModel model = utilisateurService.getUserById(id);
@@ -49,6 +53,7 @@ public class UtilisateurController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public UtilisateurResponse updateUser(@PathVariable Long id,
                                           @RequestBody UtilisateurRequest request) {
 
@@ -60,6 +65,7 @@ public class UtilisateurController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(@PathVariable Long id) {
 
         utilisateurService.deleteUser(id);

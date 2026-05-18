@@ -44,7 +44,7 @@ public class MessageIntegrationTest {
 
         expediteur.setNom("Mody");
         expediteur.setEmail("mody@gmail.com");
-        expediteur.setMotDePasse("1234");
+        expediteur.setPassword("1234");
         expediteur.setRole(Role.ADMIN);
 
         expediteur = utilisateurRepository.save(expediteur);
@@ -53,7 +53,7 @@ public class MessageIntegrationTest {
 
         destinataire.setNom("Ba");
         destinataire.setEmail("ba@gmail.com");
-        destinataire.setMotDePasse("1234");
+        destinataire.setPassword("1234");
         destinataire.setRole(Role.ADMIN);
 
         destinataire = utilisateurRepository.save(destinataire);

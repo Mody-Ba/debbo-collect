@@ -54,7 +54,7 @@ public class UtilisateurServiceImp implements UtilisateurService {
 
         utilisateur.setNom(model.getNom());
         utilisateur.setEmail(model.getEmail());
-        utilisateur.setMotDePasse(model.getMotDePasse());
+        utilisateur.setPassword(model.getPassword());
         utilisateur.setRole(model.getRole());
 
         utilisateur = utilisateurRepository.save(utilisateur);

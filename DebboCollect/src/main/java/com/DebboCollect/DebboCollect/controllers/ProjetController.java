@@ -5,6 +5,7 @@ import com.DebboCollect.DebboCollect.Model.ProjetResponse;
 import com.DebboCollect.DebboCollect.services.ProjetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,24 +18,28 @@ public class ProjetController {
     private final ProjetService projetService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ProjetResponse creerProjet(@Valid @RequestBody ProjetRequest request) {
 
         return projetService.creerProjet(request);
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
     public List<ProjetResponse> afficherTousLesProjets() {
 
         return projetService.afficherTousLesProjets();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
     public ProjetResponse afficherProjetParId(@PathVariable Long id) {
 
         return projetService.afficherProjetParId(id);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ProjetResponse modifierProjet(@PathVariable Long id,
                                          @RequestBody ProjetRequest request) {
 
@@ -42,6 +47,7 @@ public class ProjetController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void supprimerProjet(@PathVariable Long id) {
 
         projetService.supprimerProjet(id);

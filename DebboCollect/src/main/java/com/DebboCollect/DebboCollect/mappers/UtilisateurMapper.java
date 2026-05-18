@@ -13,7 +13,7 @@ public class UtilisateurMapper {
 
         model.setNom(request.getNom());
         model.setEmail(request.getEmail());
-        model.setMotDePasse(request.getMotDePasse());
+        model.setPassword(request.getPassword());
         model.setRole(request.getRole());
 
         return model;
@@ -26,7 +26,7 @@ public class UtilisateurMapper {
         utilisateur.setId(model.getId());
         utilisateur.setNom(model.getNom());
         utilisateur.setEmail(model.getEmail());
-        utilisateur.setMotDePasse(model.getMotDePasse());
+        utilisateur.setPassword(model.getPassword());
         utilisateur.setRole(model.getRole());
 
         return utilisateur;
@@ -39,7 +39,7 @@ public class UtilisateurMapper {
         model.setId(entity.getId());
         model.setNom(entity.getNom());
         model.setEmail(entity.getEmail());
-        model.setMotDePasse(entity.getMotDePasse());
+        model.setPassword(entity.getPassword());
         model.setRole(entity.getRole());
 
         return model;

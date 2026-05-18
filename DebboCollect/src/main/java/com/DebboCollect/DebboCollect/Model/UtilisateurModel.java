@@ -18,7 +18,7 @@ public class UtilisateurModel {
 
     private String email;
 
-    private String motDePasse;
+    private String password;
 
     private Role role;
 

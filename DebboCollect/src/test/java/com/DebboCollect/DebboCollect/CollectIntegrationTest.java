@@ -51,7 +51,7 @@ public class CollectIntegrationTest {
 
         utilisateur.setNom("Mody");
         utilisateur.setEmail("mody@gmail.com");
-        utilisateur.setMotDePasse("1234");
+        utilisateur.setPassword("1234");
         utilisateur.setRole(Role.ADMIN);
 
         utilisateur = utilisateurRepository.save(utilisateur);

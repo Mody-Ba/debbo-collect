@@ -33,7 +33,7 @@ public class UtilisateurIntegrationTest {
 
         utilisateurModel.setNom("Mody");
         utilisateurModel.setEmail("mody@gmail.com");
-        utilisateurModel.setMotDePasse("1234");
+        utilisateurModel.setPassword("1234");
         utilisateurModel.setRole(Role.ADMIN);
     }
 

@@ -36,14 +36,14 @@ public class UtilisateurServiceImpTest {
         utilisateur.setId(1L);
         utilisateur.setNom("Mody");
         utilisateur.setEmail("mody@gmail.com");
-        utilisateur.setMotDePasse("1234");
+        utilisateur.setPassword("1234");
 
         utilisateurModel = new UtilisateurModel();
 
         utilisateurModel.setId(1L);
         utilisateurModel.setNom("Mody");
         utilisateurModel.setEmail("mody@gmail.com");
-        utilisateurModel.setMotDePasse("1234");
+        utilisateurModel.setPassword("1234");
     }
 
     @Test
