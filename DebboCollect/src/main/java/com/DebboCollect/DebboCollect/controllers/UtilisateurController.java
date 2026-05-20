@@ -23,7 +23,7 @@ public class UtilisateurController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
     public UtilisateurResponse createUser(@Valid @RequestBody UtilisateurRequest request) {
 
         UtilisateurModel model = UtilisateurMapper.toModel(request);
@@ -44,7 +44,7 @@ public class UtilisateurController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
     public UtilisateurResponse getUserById(@PathVariable Long id) {
 
         UtilisateurModel model = utilisateurService.getUserById(id);
@@ -53,7 +53,7 @@ public class UtilisateurController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
     public UtilisateurResponse updateUser(@PathVariable Long id,
                                           @RequestBody UtilisateurRequest request) {
 

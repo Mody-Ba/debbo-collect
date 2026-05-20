@@ -1,5 +1,6 @@
 package com.DebboCollect.DebboCollect.Model;
 
+import com.DebboCollect.DebboCollect.entity.StatusCollect;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -24,4 +25,5 @@ public class CollectResponse {
     private Long enqueteurId;
 
     private Long projetId;
+    private StatusCollect statut;
 }

@@ -18,4 +18,8 @@ public interface CollectService {
     CollectResponse modifierCollecte(Long id, CollectRequest request);
 
     void supprimerCollecte(Long id);
+
+    CollectResponse validerCollecte(Long id);
+
+    CollectResponse rejeterCollecte(Long id);
 }

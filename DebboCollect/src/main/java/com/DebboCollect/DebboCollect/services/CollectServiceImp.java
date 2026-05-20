@@ -4,6 +4,7 @@ import com.DebboCollect.DebboCollect.Model.CollectRequest;
 import com.DebboCollect.DebboCollect.Model.CollectResponse;
 import com.DebboCollect.DebboCollect.entity.Collecte;
 import com.DebboCollect.DebboCollect.entity.Projet;
+import com.DebboCollect.DebboCollect.entity.StatusCollect;
 import com.DebboCollect.DebboCollect.entity.Utilisateur;
 import com.DebboCollect.DebboCollect.mappers.CollectMapper;
 import com.DebboCollect.DebboCollect.repository.CollectRepository;
@@ -83,5 +84,31 @@ public class CollectServiceImp implements CollectService {
     public void supprimerCollecte(Long id) {
 
         collectRepository.deleteById(id);
+    }
+
+    @Override
+    public CollectResponse validerCollecte(Long id) {
+
+        Collecte collecte = collectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Collecte introuvable"));
+
+        collecte.setStatut(StatusCollect.VALIDEE);
+
+        return collectMapper.toResponse(
+                collectRepository.save(collecte)
+        );
+    }
+
+    @Override
+    public CollectResponse rejeterCollecte(Long id) {
+
+        Collecte collecte = collectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Collecte introuvable"));
+
+        collecte.setStatut(StatusCollect.REJETEE);
+
+        return collectMapper.toResponse(
+                collectRepository.save(collecte)
+        );
     }
 }

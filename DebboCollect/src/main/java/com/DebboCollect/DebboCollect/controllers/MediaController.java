@@ -27,14 +27,14 @@ public class MediaController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR')")
     public List<MediaResponse> afficherTousLesMedias() {
 
         return mediaService.afficherTousLesMedias();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR')")
     public MediaResponse afficherMediaParId(@PathVariable Long id) {
 
         return mediaService.afficherMediaParId(id);
@@ -49,7 +49,7 @@ public class MediaController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ENQUETEUR')")
     public void supprimerMedia(Long id) {
 
         mediaService.supprimerMedia(id);

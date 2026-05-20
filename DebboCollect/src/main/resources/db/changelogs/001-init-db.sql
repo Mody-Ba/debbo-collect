@@ -168,3 +168,9 @@ ALTER TABLE collecte
 
 ALTER TABLE collecte
     ADD COLUMN longitude DOUBLE PRECISION;
+
+-- changeset Mody:add-statut-to-collecte
+
+ALTER TABLE collecte
+    ADD COLUMN statut VARCHAR(50);
+

@@ -18,28 +18,28 @@ public class ChampController {
     private final ChampService champService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public ChampResponse creerChamp(@Valid @RequestBody ChampRequest request) {
 
         return champService.creerChamp(request);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR','ENQUETEUR')")
     public List<ChampResponse> afficherTousLesChamps() {
 
         return champService.afficherTousLesChamps();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR','ENQUETEUR')")
     public ChampResponse afficherChampParId(@PathVariable Long id) {
 
         return champService.afficherChampParId(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public ChampResponse modifierChamp(@PathVariable Long id,
                                        @RequestBody ChampRequest request) {
 
@@ -47,7 +47,7 @@ public class ChampController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public void supprimerChamp(@PathVariable Long id) {
 
         champService.supprimerChamp(id);

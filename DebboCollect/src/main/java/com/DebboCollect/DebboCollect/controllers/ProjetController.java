@@ -18,28 +18,28 @@ public class ProjetController {
     private final ProjetService projetService;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public ProjetResponse creerProjet(@Valid @RequestBody ProjetRequest request) {
 
         return projetService.creerProjet(request);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR')")
     public List<ProjetResponse> afficherTousLesProjets() {
 
         return projetService.afficherTousLesProjets();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR','BAILLEUR')")
     public ProjetResponse afficherProjetParId(@PathVariable Long id) {
 
         return projetService.afficherProjetParId(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public ProjetResponse modifierProjet(@PathVariable Long id,
                                          @RequestBody ProjetRequest request) {
 
@@ -47,7 +47,7 @@ public class ProjetController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public void supprimerProjet(@PathVariable Long id) {
 
         projetService.supprimerProjet(id);

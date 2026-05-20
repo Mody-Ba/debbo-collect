@@ -34,4 +34,7 @@ public class Collecte {
 
     @OneToMany(mappedBy = "collecte")
     private List<Reponse> reponses;
+
+    @Enumerated(EnumType.STRING)
+    private StatusCollect statut;
 }

@@ -24,21 +24,21 @@ public class CollectController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public List<CollectResponse> afficherToutesLesCollectes() {
 
         return collecteService.afficherToutesLesCollectes();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR')")
     public CollectResponse afficherCollecteParId(@PathVariable Long id) {
 
         return collecteService.afficherCollecteParId(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ENQUETEUR')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public CollectResponse modifierCollecte(@PathVariable Long id,
                                              @RequestBody CollectRequest request) {
 
@@ -46,10 +46,24 @@ public class CollectController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('SUPERVISUER')")
     public void supprimerCollecte(@PathVariable Long id) {
 
         collecteService.supprimerCollecte(id);
+    }
+
+    @PutMapping("/{id}/valider")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
+    public CollectResponse validerCollecte(@PathVariable Long id) {
+
+        return collecteService.validerCollecte(id);
+    }
+
+    @PutMapping("/{id}/rejeter")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
+    public CollectResponse rejeterCollecte(@PathVariable Long id) {
+
+        return collecteService.rejeterCollecte(id);
     }
 
 }

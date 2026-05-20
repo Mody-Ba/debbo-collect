@@ -5,6 +5,7 @@ import com.DebboCollect.DebboCollect.Model.CollectRequest;
 import com.DebboCollect.DebboCollect.Model.CollectResponse;
 import com.DebboCollect.DebboCollect.entity.Collecte;
 import com.DebboCollect.DebboCollect.entity.Projet;
+import com.DebboCollect.DebboCollect.entity.StatusCollect;
 import com.DebboCollect.DebboCollect.entity.Utilisateur;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +22,7 @@ public class CollectMapper {
                 .longitude(request.getLongitude())
                 .enqueteur(enqueteur)
                 .projet(projet)
+                .statut(StatusCollect.EN_ATTENTE)
                 .build();
     }
 
@@ -34,6 +36,7 @@ public class CollectMapper {
                 .longitude(collecte.getLongitude())
                 .enqueteurId(collecte.getEnqueteur().getId())
                 .projetId(collecte.getProjet().getId())
+                .statut(collecte.getStatut())
                 .build();
     }
 
