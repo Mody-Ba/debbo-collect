@@ -21,6 +21,7 @@ public class UtilisateurModel {
     private String password;
 
     private Role role;
+    private Boolean compteActif;
 
 }
 /*role de cette classe  utilisé dans service

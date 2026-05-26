@@ -13,9 +13,17 @@ CREATE TABLE utilisateur
     email VARCHAR(255),
     password VARCHAR(255),
     role VARCHAR(100),
-
+    superviseur_id BIGINT,
     CONSTRAINT utilisateur_pkey PRIMARY KEY (id)
+
 );
+
+ALTER TABLE utilisateur
+    ADD CONSTRAINT fk_superviseur
+        FOREIGN KEY (superviseur_id)
+            REFERENCES utilisateur(id);
+
+
 
 -- =========================================================
 -- TABLE PROJET
@@ -173,4 +181,21 @@ ALTER TABLE collecte
 
 ALTER TABLE collecte
     ADD COLUMN statut VARCHAR(50);
+
+-- changeset Mody:add-compte-actif-to-utilisateur
+
+ALTER TABLE utilisateur
+    ADD COLUMN compte_actif BOOLEAN DEFAULT FALSE;
+
+-- changeset Mody:add-projet-id-to-utilisateur
+
+ALTER TABLE utilisateur
+    ADD COLUMN projet_id BIGINT;
+
+ALTER TABLE utilisateur
+    ADD CONSTRAINT fk_utilisateur_projet
+        FOREIGN KEY (projet_id)
+            REFERENCES projet(id);
+
+
 

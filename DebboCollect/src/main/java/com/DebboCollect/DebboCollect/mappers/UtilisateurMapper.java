@@ -16,6 +16,8 @@ public class UtilisateurMapper {
         model.setPassword(request.getPassword());
         model.setRole(request.getRole());
 
+        model.setCompteActif(request.getCompteActif());
+
         return model;
     }
 
@@ -28,6 +30,7 @@ public class UtilisateurMapper {
         utilisateur.setEmail(model.getEmail());
         utilisateur.setPassword(model.getPassword());
         utilisateur.setRole(model.getRole());
+        utilisateur.setCompteActif(model.getCompteActif());
 
         return utilisateur;
     }
@@ -41,6 +44,7 @@ public class UtilisateurMapper {
         model.setEmail(entity.getEmail());
         model.setPassword(entity.getPassword());
         model.setRole(entity.getRole());
+        model.setCompteActif(entity.getCompteActif());
 
         return model;
     }
@@ -53,6 +57,7 @@ public class UtilisateurMapper {
         response.setNom(model.getNom());
         response.setEmail(model.getEmail());
         response.setRole(model.getRole());
+        response.setCompteActif(model.getCompteActif());
 
         return response;
     }

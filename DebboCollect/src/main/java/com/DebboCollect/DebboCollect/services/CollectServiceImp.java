@@ -11,6 +11,8 @@ import com.DebboCollect.DebboCollect.repository.CollectRepository;
 import com.DebboCollect.DebboCollect.repository.ProjetRepository;
 import com.DebboCollect.DebboCollect.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +36,7 @@ public class CollectServiceImp implements CollectService {
                 .orElseThrow(() -> new RuntimeException("Projet non trouvé"));
 
         Collecte collecte = collectMapper.toEntity(request, enqueteur, projet);
+        collecte.setStatut(StatusCollect.EN_ATTENTE);
 
         Collecte savedCollecte = collectRepository.save(collecte);
 
@@ -42,6 +45,36 @@ public class CollectServiceImp implements CollectService {
 
     @Override
     public List<CollectResponse> afficherToutesLesCollectes() {
+
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        String role = authentication.getAuthorities()
+                .iterator()
+                .next()
+                .getAuthority();
+
+        String email = authentication.getName();
+
+        if (role.equals("ROLE_ENQUETEUR")) {
+
+            return collectRepository.findAll()
+                    .stream()
+                    .filter(c -> c.getEnqueteur().getEmail().equals(email))
+                    .map(collectMapper::toResponse)
+                    .toList();
+        }
+
+        if (role.equals("ROLE_BAILLEUR")) {
+
+            return collectRepository.findAll()
+                    .stream()
+                    .filter(c -> c.getProjet().getBailleur().getEmail().equals(email))
+                    .filter(c -> c.getStatut() == StatusCollect.VALIDEE)
+                    .map(collectMapper::toResponse)
+                    .toList();
+        }
 
         return collectRepository.findAll()
                 .stream()
@@ -63,6 +96,23 @@ public class CollectServiceImp implements CollectService {
 
         Collecte collecte = collectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Collecte non trouvée"));
+
+        if (collecte.getStatut() == StatusCollect.VALIDEE) {
+            throw new RuntimeException("Impossible de modifier une collecte validée");
+        }
+
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        String email = authentication.getName();
+
+        if (!collecte.getEnqueteur().getEmail().equals(email)) {
+
+            throw new RuntimeException(
+                    "Vous ne pouvez pas modifier cette collecte"
+            );
+        }
 
         Utilisateur enqueteur = utilisateurRepository.findById(request.getEnqueteurId())
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
@@ -98,17 +148,18 @@ public class CollectServiceImp implements CollectService {
                 collectRepository.save(collecte)
         );
     }
-
     @Override
-    public CollectResponse rejeterCollecte(Long id) {
+    public CollectResponse demanderRevision(Long id) {
 
         Collecte collecte = collectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Collecte introuvable"));
 
-        collecte.setStatut(StatusCollect.REJETEE);
+        collecte.setStatut(StatusCollect.EN_REVISION);
 
         return collectMapper.toResponse(
                 collectRepository.save(collecte)
         );
     }
+
+
 }

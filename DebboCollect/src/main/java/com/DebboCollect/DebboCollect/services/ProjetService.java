@@ -16,4 +16,9 @@ public interface ProjetService {
     ProjetResponse modifierProjet(Long id, ProjetRequest request);
 
     void supprimerProjet(Long id);
+
+    ProjetResponse assignerEnqueteur(
+            Long projetId,
+            Long enqueteurId
+    );
 }

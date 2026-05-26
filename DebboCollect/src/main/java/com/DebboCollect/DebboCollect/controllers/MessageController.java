@@ -18,38 +18,25 @@ public class MessageController {
     private final MessageService messageService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR','ENQUETEUR')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR','ENQUETEUR','BAILLEUR')")
     public MessageResponse creerMessage(@Valid @RequestBody MessageRequest request) {
 
         return messageService.creerMessage(request);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR','ENQUETEUR','BAILLEUR')")
     public List<MessageResponse> afficherTousLesMessages() {
 
         return messageService.afficherTousLesMessages();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR','ENQUETEUR','BAILLEUR')")
     public MessageResponse afficherMessageParId(@PathVariable Long id) {
 
         return messageService.afficherMessageParId(id);
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public MessageResponse modifierMessage(@PathVariable Long id,
-                                           @RequestBody MessageRequest request) {
 
-        return messageService.modifierMessage(id, request);
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void supprimerMessage(@PathVariable Long id) {
-
-        messageService.supprimerMessage(id);
-    }
 }

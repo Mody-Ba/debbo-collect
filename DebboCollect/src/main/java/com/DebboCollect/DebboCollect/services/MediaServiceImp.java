@@ -4,6 +4,7 @@ import com.DebboCollect.DebboCollect.Model.MediaRequest;
 import com.DebboCollect.DebboCollect.Model.MediaResponse;
 import com.DebboCollect.DebboCollect.entity.Media;
 import com.DebboCollect.DebboCollect.entity.Reponse;
+import com.DebboCollect.DebboCollect.entity.StatusCollect;
 import com.DebboCollect.DebboCollect.mappers.MediaMapper;
 import com.DebboCollect.DebboCollect.repository.MediaRepository;
 import com.DebboCollect.DebboCollect.repository.ReponseRepository;
@@ -61,6 +62,13 @@ public class MediaServiceImp implements MediaService {
         Media media = mediaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Media non trouvé"));
 
+        if (media.getReponse()
+                .getCollecte()
+                .getStatut() == StatusCollect.VALIDEE) {
+
+            throw new RuntimeException("Impossible de modifier un média d'une collecte validée");
+        }
+
         Reponse reponse = reponseRepository.findById(request.getReponseId())
                 .orElseThrow(() -> new RuntimeException("Réponse non trouvée"));
 
@@ -76,7 +84,17 @@ public class MediaServiceImp implements MediaService {
     @Override
     public void supprimerMedia(Long id) {
 
-        mediaRepository.deleteById(id);
+        Media media = mediaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Media non trouvé"));
+
+        if (media.getReponse()
+                .getCollecte()
+                .getStatut() == StatusCollect.VALIDEE) {
+
+            throw new RuntimeException("Impossible de supprimer un média d'une collecte validée");
+        }
+
+        mediaRepository.delete(media);
     }
     @Override
     public String uploadFile(MultipartFile file) {

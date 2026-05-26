@@ -4,6 +4,7 @@ import com.DebboCollect.DebboCollect.Model.JwtResponse;
 import com.DebboCollect.DebboCollect.Model.LoginRequest;
 import com.DebboCollect.DebboCollect.Model.RegisterRequest;
 import com.DebboCollect.DebboCollect.configs.JwtUtils;
+import com.DebboCollect.DebboCollect.entity.Role;
 import com.DebboCollect.DebboCollect.entity.Utilisateur;
 import com.DebboCollect.DebboCollect.exception.CustomResponseException;
 import com.DebboCollect.DebboCollect.repository.UtilisateurRepository;
@@ -29,6 +30,38 @@ public class AuthService {
             LoginRequest request
     ) {
 
+
+
+        Utilisateur utilisateur =
+                utilisateurRepository
+                        .findByEmail(request.getEmail())
+                        .orElseThrow(() ->
+                                new CustomResponseException(
+                                        "Utilisateur introuvable",
+                                        404
+                                )
+                        );
+
+        if (!utilisateur.getCompteActif()) {
+
+            if (utilisateur.getRole() == Role.SUPERVISEUR) {
+
+                throw new CustomResponseException(
+                        "Compte désactivé par l'administrateur",
+                        500
+                );
+            }
+
+            if (utilisateur.getRole() == Role.BAILLEUR
+                    || utilisateur.getRole() == Role.ENQUETEUR) {
+
+                throw new CustomResponseException(
+                        "Compte désactivé par le superviseur",
+                        500
+                );
+            }
+        }
+
         Authentication authentication =
                 authenticationManager.authenticate(
 
@@ -51,44 +84,5 @@ public class AuthService {
         );
     }
 
-    public String register(
-            RegisterRequest request
-    ) {
 
-        if (utilisateurRepository
-                .findByEmail(request.getEmail())
-                .isPresent()) {
-
-            throw new CustomResponseException(
-                    "Email déjà utilisé",
-                    400
-            );
-        }
-
-        Utilisateur utilisateur =
-                new Utilisateur();
-
-        utilisateur.setNom(
-                request.getNom()
-        );
-
-        utilisateur.setEmail(
-                request.getEmail()
-        );
-
-        utilisateur.setPassword(
-
-                passwordEncoder.encode(
-                        request.getPassword()
-                )
-        );
-
-        utilisateur.setRole(
-                request.getRole()
-        );
-
-        utilisateurRepository.save(utilisateur);
-
-        return "Utilisateur créé avec succès";
-    }
 }

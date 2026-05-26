@@ -46,10 +46,5 @@ public class ReponseController {
         return reponseService.modifierReponse(id, request);
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public void supprimerReponse(@PathVariable Long id) {
 
-        reponseService.supprimerReponse(id);
-    }
 }

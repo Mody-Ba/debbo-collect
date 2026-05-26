@@ -19,6 +19,7 @@ public class UtilisateurResponse {
     private String email;
 
     private Role role;
+    private Boolean compteActif;
 }
 /*Rôle Quand Swagger fait :
 GET /users API renvoie :

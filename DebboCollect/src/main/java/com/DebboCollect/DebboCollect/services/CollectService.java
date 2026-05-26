@@ -20,6 +20,7 @@ public interface CollectService {
     void supprimerCollecte(Long id);
 
     CollectResponse validerCollecte(Long id);
+    CollectResponse demanderRevision(Long id);
 
-    CollectResponse rejeterCollecte(Long id);
+
 }

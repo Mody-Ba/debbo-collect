@@ -24,8 +24,21 @@ public class ProjetController {
         return projetService.creerProjet(request);
     }
 
+    @PutMapping("/{projetId}/assigner-enqueteur/{enqueteurId}")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
+    public ProjetResponse assignerEnqueteur(
+            @PathVariable Long projetId,
+            @PathVariable Long enqueteurId
+    ) {
+
+        return projetService.assignerEnqueteur(
+                projetId,
+                enqueteurId
+        );
+    }
+
     @GetMapping
-    @PreAuthorize("hasAnyRole('SUPERVISEUR')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public List<ProjetResponse> afficherTousLesProjets() {
 
         return projetService.afficherTousLesProjets();

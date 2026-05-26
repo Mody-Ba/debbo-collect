@@ -16,4 +16,8 @@ public interface UtilisateurService {
 
     void deleteUser(Long id);
 
+    UtilisateurModel activateUser(Long id);
+
+    UtilisateurModel deactivateUser(Long id);
+
 }

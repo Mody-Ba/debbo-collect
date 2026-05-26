@@ -25,8 +25,10 @@ public class Utilisateur {
     private String email;
 
     private String password;
-
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    private Boolean compteActif = false;
 
     @OneToMany(mappedBy = "expediteur")
     //plusieur message envoyer par un seul utli
@@ -38,6 +40,12 @@ public class Utilisateur {
 
     @OneToMany(mappedBy = "superviseur")
     private List<Projet> projetsSupervises;
+
+    @ManyToOne
+    private Projet projet;
+
+    @ManyToOne
+    private Utilisateur superviseur;
 
     @OneToMany(mappedBy = "bailleur")
     private List<Projet> projetsFinances;

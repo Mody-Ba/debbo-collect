@@ -39,6 +39,9 @@ public class Projet {
     private Utilisateur bailleur;
 
     @OneToMany(mappedBy = "projet")
+    private List<Utilisateur> enqueteurs;
+
+    @OneToMany(mappedBy = "projet")
     private List<Champ> champs;
 
     @OneToMany(mappedBy = "projet")

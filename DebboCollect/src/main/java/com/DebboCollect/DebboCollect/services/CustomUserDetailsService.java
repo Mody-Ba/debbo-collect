@@ -30,6 +30,13 @@ public class CustomUserDetailsService
                                 )
                         );
 
+        if (!utilisateur.getCompteActif()) {
+
+            throw new RuntimeException(
+                    "Compte désactivé par l'administrateur"
+            );
+        }
+
         return new User(
 
                 utilisateur.getEmail(),

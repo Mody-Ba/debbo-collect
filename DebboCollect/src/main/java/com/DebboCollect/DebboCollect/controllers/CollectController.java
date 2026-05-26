@@ -31,14 +31,14 @@ public class CollectController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPERVISEUR')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public CollectResponse afficherCollecteParId(@PathVariable Long id) {
 
         return collecteService.afficherCollecteParId(id);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('SUPERVISEUR')")
+    @PreAuthorize("hasRole('ENQUETEUR')")
     public CollectResponse modifierCollecte(@PathVariable Long id,
                                              @RequestBody CollectRequest request) {
 
@@ -46,7 +46,7 @@ public class CollectController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('SUPERVISUER')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public void supprimerCollecte(@PathVariable Long id) {
 
         collecteService.supprimerCollecte(id);
@@ -59,11 +59,13 @@ public class CollectController {
         return collecteService.validerCollecte(id);
     }
 
-    @PutMapping("/{id}/rejeter")
+    @PutMapping("/{id}/revision")
     @PreAuthorize("hasRole('SUPERVISEUR')")
-    public CollectResponse rejeterCollecte(@PathVariable Long id) {
+    public CollectResponse demanderRevision(@PathVariable Long id) {
 
-        return collecteService.rejeterCollecte(id);
+        return collecteService.demanderRevision(id);
     }
+
+
 
 }

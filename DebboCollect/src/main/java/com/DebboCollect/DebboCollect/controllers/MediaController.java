@@ -27,14 +27,14 @@ public class MediaController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('SUPERVISEUR')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public List<MediaResponse> afficherTousLesMedias() {
 
         return mediaService.afficherTousLesMedias();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SUPERVISEUR')")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
     public MediaResponse afficherMediaParId(@PathVariable Long id) {
 
         return mediaService.afficherMediaParId(id);
@@ -50,11 +50,12 @@ public class MediaController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ENQUETEUR')")
-    public void supprimerMedia(Long id) {
+    public void supprimerMedia(@PathVariable Long id) {
 
         mediaService.supprimerMedia(id);
     }
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ENQUETEUR')")
     public String uploadMedia(@RequestParam("file") MultipartFile file) {
 
         return mediaService.uploadFile(file);

@@ -28,6 +28,8 @@ public class UtilisateurRequest {
     @NotNull(message = "Le rôle est obligatoire")
     private Role role;
 
+    private Boolean compteActif;
+
 }
 /* role de cette classe quand swagger envoie {
   "nom": "Mody",

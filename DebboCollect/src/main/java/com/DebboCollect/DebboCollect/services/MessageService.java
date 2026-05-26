@@ -13,7 +13,5 @@ public interface MessageService {
 
     MessageResponse afficherMessageParId(Long id);
 
-    MessageResponse modifierMessage(Long id, MessageRequest request);
 
-    void supprimerMessage(Long id);
 }

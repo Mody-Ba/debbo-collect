@@ -8,6 +8,8 @@ import com.DebboCollect.DebboCollect.mappers.ChampMapper;
 import com.DebboCollect.DebboCollect.repository.ChampRepository;
 import com.DebboCollect.DebboCollect.repository.ProjetRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,12 +38,39 @@ public class ChampServiceImp implements ChampService {
     @Override
     public List<ChampResponse> afficherTousLesChamps() {
 
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+
+        String role = authentication.getAuthorities()
+                .iterator()
+                .next()
+                .getAuthority();
+
+        String email = authentication.getName();
+
+        if (role.equals("ROLE_ENQUETEUR")) {
+
+            return champRepository.findAll()
+                    .stream()
+                    .filter(champ -> champ.getProjet()
+                            .getCollectes()
+                            .stream()
+                            .anyMatch(collecte ->
+                                    collecte.getEnqueteur()
+                                            .getEmail()
+                                            .equals(email)
+                            )
+                    )
+                    .map(champMapper::toResponse)
+                    .toList();
+        }
+
         return champRepository.findAll()
                 .stream()
                 .map(champMapper::toResponse)
                 .toList();
     }
-
     @Override
     public ChampResponse afficherChampParId(Long id) {
 

@@ -1,6 +1,7 @@
 package com.DebboCollect.DebboCollect.Model;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,8 +19,8 @@ public class ChampRequest {
     private String type;
     @NotBlank(message = "La question est obligatoire")
     private String question;
-    @NotBlank(message = "Le type est obligatoire")
+    @NotNull
     private boolean preuveObligatoire;
-    @NotBlank(message = "Le projet est obligatoire")
+    @NotNull
     private Long projetId;
 }

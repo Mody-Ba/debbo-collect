@@ -5,6 +5,7 @@ import com.DebboCollect.DebboCollect.Model.ReponseResponse;
 import com.DebboCollect.DebboCollect.entity.Champ;
 import com.DebboCollect.DebboCollect.entity.Collecte;
 import com.DebboCollect.DebboCollect.entity.Reponse;
+import com.DebboCollect.DebboCollect.entity.StatusCollect;
 import com.DebboCollect.DebboCollect.mappers.ReponseMapper;
 import com.DebboCollect.DebboCollect.repository.ChampRepository;
 import com.DebboCollect.DebboCollect.repository.CollectRepository;
@@ -63,6 +64,10 @@ public class ReponseServiceImp implements ReponseService {
         Reponse reponse = reponseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Réponse non trouvée"));
 
+        if (reponse.getCollecte().getStatut() == StatusCollect.VALIDEE) {
+            throw new RuntimeException("Impossible de modifier une réponse d'une collecte validée");
+        }
+
         Champ champ = champRepository.findById(request.getChampId())
                 .orElseThrow(() -> new RuntimeException("Champ non trouvé"));
 
@@ -78,9 +83,5 @@ public class ReponseServiceImp implements ReponseService {
         return reponseMapper.toResponse(updatedReponse);
     }
 
-    @Override
-    public void supprimerReponse(Long id) {
 
-        reponseRepository.deleteById(id);
-    }
 }

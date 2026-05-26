@@ -22,9 +22,16 @@ public class UtilisateurController {
         this.utilisateurService = utilisateurService;
     }
 
-    @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
-    public UtilisateurResponse createUser(@Valid @RequestBody UtilisateurRequest request) {
+    @PostMapping("/superviseurs")
+    @PreAuthorize("hasRole('ADMIN')")
+    public UtilisateurResponse createSuperviseur(
+            @Valid @RequestBody UtilisateurRequest request
+    ) {
+
+        request.setRole(com.DebboCollect.DebboCollect.entity.Role.SUPERVISEUR
+        );
+
+        request.setCompteActif(false);
 
         UtilisateurModel model = UtilisateurMapper.toModel(request);
 
@@ -33,8 +40,48 @@ public class UtilisateurController {
         return UtilisateurMapper.toResponse(model);
     }
 
+    @PostMapping("/bailleurs")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
+    public UtilisateurResponse createBailleur(
+            @Valid @RequestBody UtilisateurRequest request
+    ) {
+
+        request.setRole(
+                com.DebboCollect.DebboCollect.entity.Role.BAILLEUR
+        );
+
+        request.setCompteActif(true);
+
+        UtilisateurModel model =
+                UtilisateurMapper.toModel(request);
+
+        model = utilisateurService.createUser(model);
+
+        return UtilisateurMapper.toResponse(model);
+    }
+
+    @PostMapping("/enqueteurs")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
+    public UtilisateurResponse createEnqueteur(
+            @Valid @RequestBody UtilisateurRequest request
+    ) {
+
+        request.setRole(
+                com.DebboCollect.DebboCollect.entity.Role.ENQUETEUR
+        );
+
+        request.setCompteActif(false);
+
+        UtilisateurModel model =
+                UtilisateurMapper.toModel(request);
+
+        model = utilisateurService.createUser(model);
+
+        return UtilisateurMapper.toResponse(model);
+    }
+
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
     public List<UtilisateurResponse> getAllUsers() {
 
         return utilisateurService.getAllUsers()
@@ -65,9 +112,27 @@ public class UtilisateurController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
     public void deleteUser(@PathVariable Long id) {
 
         utilisateurService.deleteUser(id);
+    }
+
+    @PutMapping("/{id}/activate")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    public UtilisateurResponse activateUser(@PathVariable Long id) {
+
+        UtilisateurModel model = utilisateurService.activateUser(id);
+
+        return UtilisateurMapper.toResponse(model);
+    }
+
+    @PutMapping("/{id}/deactivate")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    public UtilisateurResponse deactivateUser(@PathVariable Long id) {
+
+        UtilisateurModel model = utilisateurService.deactivateUser(id);
+
+        return UtilisateurMapper.toResponse(model);
     }
 }
