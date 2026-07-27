@@ -25,10 +25,6 @@ public class AdminInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        if (utilisateurRepository.existsByRole(Role.ADMIN)) {
-            return;
-        }
-
         if (adminEmail == null || adminEmail.isBlank()
                 || adminPassword == null || adminPassword.isBlank()) {
 
@@ -37,20 +33,35 @@ public class AdminInitializer implements CommandLineRunner {
             );
         }
 
-        Utilisateur admin = new Utilisateur();
+        Utilisateur admin = utilisateurRepository.findAll()
+                .stream()
+                .filter(utilisateur ->
+                        utilisateur.getRole() == Role.ADMIN
+                )
+                .findFirst()
+                .orElseGet(Utilisateur::new);
 
         admin.setNom("Administrateur");
         admin.setEmail(adminEmail.trim().toLowerCase());
-        admin.setPassword(
-                passwordEncoder.encode(adminPassword)
-        );
+
+        if (admin.getPassword() == null
+                || !passwordEncoder.matches(
+                adminPassword,
+                admin.getPassword()
+        )) {
+
+            admin.setPassword(
+                    passwordEncoder.encode(adminPassword)
+            );
+        }
+
         admin.setRole(Role.ADMIN);
         admin.setCompteActif(true);
 
         utilisateurRepository.save(admin);
 
         System.out.println(
-                "Compte administrateur initial créé"
+                "Compte administrateur initial synchronisé"
         );
     }
 }
