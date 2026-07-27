@@ -27,64 +27,57 @@ public class AuthService {
 
     private final JwtUtils jwtUtils;
 
-    public JwtResponse login(
-            LoginRequest request
-    ) {
+    public JwtResponse login(LoginRequest request) {
 
+        String email = request.getEmail()
+                .trim()
+                .toLowerCase();
 
-        Utilisateur utilisateur =
-                utilisateurRepository
-                        .findByEmail(request.getEmail())
-                        .orElseThrow(() ->
-                                new CustomResponseException(
-                                        "Utilisateur introuvable",
-                                        404
-                                )
-                        );
+        String password = request.getPassword();
 
-        if (!utilisateur.getCompteActif()) {
-
-            if (utilisateur.getRole() == Role.SUPERVISEUR) {
-
-                throw new CustomResponseException(
-                        "Compte désactivé par l'administrateur",
-                        500
-                );
-            }
-
-            if (utilisateur.getRole() == Role.BAILLEUR
-                    || utilisateur.getRole() == Role.ENQUETEUR) {
-
-                throw new CustomResponseException(
-                        "Compte désactivé par le superviseur",
-                        500
-                );
-            }
-        }
-
-        Authentication authentication =
-                authenticationManager.authenticate(
-
-                        new UsernamePasswordAuthenticationToken(
-
-                                request.getEmail(),
-
-                                request.getPassword()
+        Utilisateur utilisateur = utilisateurRepository
+                .findByEmail(email)
+                .orElseThrow(() ->
+                        new CustomResponseException(
+                                "Utilisateur introuvable",
+                                404
                         )
                 );
 
-        String jwt =
-                jwtUtils.generateJwtToken(
-                        request.getEmail()
-                );
+        if (!utilisateur.getCompteActif()) {
+
+            String message =
+                    utilisateur.getRole() == Role.SUPERVISEUR
+                            ? "Compte désactivé par l'administrateur"
+                            : "Compte désactivé par le superviseur";
+
+            throw new CustomResponseException(message, 403);
+        }
+
+        try {
+
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            email,
+                            password
+                    )
+            );
+
+        } catch (BadCredentialsException exception) {
+
+            throw new CustomResponseException(
+                    "Email ou mot de passe incorrect",
+                    401
+            );
+        }
+
+        String jwt = jwtUtils.generateJwtToken(email);
 
         return new JwtResponse(
                 jwt,
-                request.getEmail(),
+                email,
                 utilisateur.getRole().name()
         );
-
-
     }
 
     public Utilisateur getCurrentUser() {
