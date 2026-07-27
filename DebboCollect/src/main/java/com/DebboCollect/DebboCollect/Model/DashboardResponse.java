@@ -17,4 +17,14 @@ public class DashboardResponse {
     private Long nombreReponses;
 
     private Long nombreUtilisateurs;
+
+    private long collectesValidees;
+    private long collectesEnAttente;
+
+    private Double pourcentageValidation;
+
+    private Double pourcentageCollectes;
+
+
+
 }

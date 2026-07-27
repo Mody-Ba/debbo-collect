@@ -7,6 +7,8 @@ import com.DebboCollect.DebboCollect.entity.Champ;
 import com.DebboCollect.DebboCollect.entity.Projet;
 import org.springframework.stereotype.Component;
 
+import static org.springframework.http.RequestEntity.options;
+
 @Component
 public class ChampMapper {
 
@@ -15,7 +17,10 @@ public class ChampMapper {
         return Champ.builder()
                 .type(request.getType())
                 .question(request.getQuestion())
+                .options(request.getOptions())
                 .preuveObligatoire(request.isPreuveObligatoire())
+                .statistique(request.getStatistique())
+                .valeurDeclenchement(request.getValeurDeclenchement())
                 .projet(projet)
                 .build();
     }
@@ -26,10 +31,19 @@ public class ChampMapper {
                 .id(champ.getId())
                 .type(champ.getType())
                 .question(champ.getQuestion())
+                .options(champ.getOptions())
                 .preuveObligatoire(champ.isPreuveObligatoire())
+                .statistique(champ.getStatistique())
+                .champParentId(
+                        champ.getChampParent() != null
+                                ? champ.getChampParent().getId()
+                                : null
+                )
+                .valeurDeclenchement(champ.getValeurDeclenchement())
                 .projetId(champ.getProjet().getId())
                 .build();
     }
+
 
     public ChampModel toModel(Champ champ) {
 
@@ -37,8 +51,11 @@ public class ChampMapper {
                 .id(champ.getId())
                 .type(champ.getType())
                 .question(champ.getQuestion())
+                .options(champ.getOptions())
                 .preuveObligatoire(champ.isPreuveObligatoire())
+                .statistique(champ.getStatistique())
                 .projetId(champ.getProjet().getId())
                 .build();
     }
+
 }

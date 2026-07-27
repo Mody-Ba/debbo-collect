@@ -14,6 +14,7 @@ public class ReponseRequest {
     private String valeur;
     @NotNull(message = "Le champ est obligatoire")
     private Long champId;
+    private String commentaireSuperviseur;
     @NotNull(message = "La collecte est obligatoire")
     private Long collecteId;
 }

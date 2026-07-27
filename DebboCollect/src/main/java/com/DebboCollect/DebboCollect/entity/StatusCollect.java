@@ -5,6 +5,11 @@ public enum StatusCollect {
 
     EN_REVISION,
 
-    VALIDEE
+    VALIDEE,
+
+    ENVOYEE,
+
+    ENREGISTREE
+
 
 }

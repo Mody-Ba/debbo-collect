@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import com.DebboCollect.DebboCollect.entity.TypeChamps;
 
 import java.util.List;
 
@@ -22,19 +23,87 @@ public class ChampServiceImp implements ChampService {
     private final ProjetRepository projetRepository;
     private final ChampMapper champMapper;
 
+
     @Override
     public ChampResponse creerChamp(ChampRequest request) {
 
-        Projet projet = projetRepository.findById(request.getProjetId())
-                .orElseThrow(() -> new RuntimeException("Projet non trouvé"));
+        System.out.println(
+                "STATISTIQUE RECUE = " + request.getStatistique()
+        );
+        System.out.println("REQUEST = " + request);
+
+        Projet projet = projetRepository
+                .findById(request.getProjetId())
+                .orElseThrow(() ->
+                        new RuntimeException("Projet non trouvé")
+                );
+
+        if (
+                (request.getType() == TypeChamps.CHOIX_UNIQUE
+                        || request.getType() == TypeChamps.CHOIX_MULTIPLE)
+                        && (
+                        request.getOptions() == null
+                                || request.getOptions().isBlank()
+                )
+        ) {
+            throw new RuntimeException(
+                    "Les options sont obligatoires pour ce type de champ"
+            );
+        }
 
         Champ champ = champMapper.toEntity(request, projet);
+
+        if (request.getChampParentId() != null) {
+
+            Champ champParent = champRepository
+                    .findById(request.getChampParentId())
+                    .orElseThrow(() ->
+                            new RuntimeException(
+                                    "Question principale introuvable"
+                            )
+                    );
+
+            if (!champParent.getProjet().getId()
+                    .equals(projet.getId())) {
+
+                throw new RuntimeException(
+                        "La question principale doit appartenir au même projet"
+                );
+            }
+
+            if (champParent.getType() != TypeChamps.OUI_NON) {
+
+                throw new RuntimeException(
+                        "La question principale doit être de type Oui/Non"
+                );
+            }
+
+            String valeur = request.getValeurDeclenchement();
+
+            if (
+                    !"true".equalsIgnoreCase(valeur)
+                            && !"false".equalsIgnoreCase(valeur)
+            ) {
+                throw new RuntimeException(
+                        "La réponse déclencheuse doit être Oui ou Non"
+                );
+            }
+
+            champ.setChampParent(champParent);
+            champ.setValeurDeclenchement(
+                    valeur.toLowerCase()
+            );
+
+        } else {
+
+            champ.setChampParent(null);
+            champ.setValeurDeclenchement(null);
+        }
 
         Champ savedChamp = champRepository.save(champ);
 
         return champMapper.toResponse(savedChamp);
     }
-
     @Override
     public List<ChampResponse> afficherTousLesChamps() {
 
@@ -91,7 +160,9 @@ public class ChampServiceImp implements ChampService {
 
         champ.setType(request.getType());
         champ.setQuestion(request.getQuestion());
+        champ.setOptions(request.getOptions());
         champ.setPreuveObligatoire(request.isPreuveObligatoire());
+        champ.setStatistique(request.getStatistique());
         champ.setProjet(projet);
 
         Champ updatedChamp = champRepository.save(champ);
@@ -103,5 +174,14 @@ public class ChampServiceImp implements ChampService {
     public void supprimerChamp(Long id) {
 
         champRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ChampResponse> afficherChampsParProjet(Long projetId) {
+
+        return champRepository.findByProjetId(projetId)
+                .stream()
+                .map(champMapper::toResponse)
+                .toList();
     }
 }

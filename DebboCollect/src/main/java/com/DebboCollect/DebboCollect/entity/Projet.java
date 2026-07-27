@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +31,13 @@ public class Projet {
 
     private LocalDate dateFin;
 
+    private LocalDateTime dateEnvoiBailleur;
+
     private String type;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private StatutProjet statut = StatutProjet.EN_COURS;
 
     @ManyToOne
     private Utilisateur superviseur;

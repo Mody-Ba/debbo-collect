@@ -73,7 +73,7 @@ public class MediaIntegrationTest {
 
         Champ champ = new Champ();
 
-        champ.setType("Texte");
+        champ.setType(TypeChamps.TEXTE);
         champ.setQuestion("Quel est votre nom ?");
         champ.setPreuveObligatoire(true);
         champ.setProjet(projet);

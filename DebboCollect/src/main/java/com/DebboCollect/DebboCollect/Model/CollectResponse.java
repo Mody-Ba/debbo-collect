@@ -16,14 +16,15 @@ public class CollectResponse {
 
     private LocalDate dateCollecte;
 
-    private String localisation;
-
-    private Double latitude;
-
-    private Double longitude;
-
     private Long enqueteurId;
 
+    private Integer numeroCollecteProjet;
+
     private Long projetId;
+
+    private String nomProjet;
+
     private StatusCollect statut;
+
+
 }

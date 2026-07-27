@@ -16,6 +16,12 @@ public interface ReponseService {
 
     ReponseResponse modifierReponse(Long id, ReponseRequest request);
 
+    void supprimerReponse(Long id);
+
+    List<ReponseResponse> afficherReponsesParCollecte(Long collecteId);
+
+    ReponseResponse ajouterCommentaire(Long id, String commentaire);
+
 
 
 

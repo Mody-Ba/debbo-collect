@@ -1,11 +1,7 @@
 package com.DebboCollect.DebboCollect;
 import com.DebboCollect.DebboCollect.Model.ReponseRequest;
 import com.DebboCollect.DebboCollect.Model.ReponseResponse;
-import com.DebboCollect.DebboCollect.entity.Champ;
-import com.DebboCollect.DebboCollect.entity.Collecte;
-import com.DebboCollect.DebboCollect.entity.Projet;
-import com.DebboCollect.DebboCollect.entity.Role;
-import com.DebboCollect.DebboCollect.entity.Utilisateur;
+import com.DebboCollect.DebboCollect.entity.*;
 import com.DebboCollect.DebboCollect.repository.ChampRepository;
 import com.DebboCollect.DebboCollect.repository.CollectRepository;
 import com.DebboCollect.DebboCollect.repository.ProjetRepository;
@@ -75,7 +71,7 @@ public class ReponseIntegrationTest {
         utilisateur = utilisateurRepository.save(utilisateur);
 
         champ = new Champ();
-        champ.setType("Texte");
+        champ.setType(TypeChamps.TEXTE);
         champ.setQuestion("Quel est votre nom ?");
         champ.setPreuveObligatoire(true);
         champ.setProjet(projet);

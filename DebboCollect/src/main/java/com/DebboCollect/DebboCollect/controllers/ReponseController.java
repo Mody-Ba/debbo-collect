@@ -25,14 +25,14 @@ public class ReponseController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('ENQUETEUR','SUPERVISEUR')")
     public List<ReponseResponse> afficherToutesLesReponses() {
 
         return reponseService.afficherToutesLesReponses();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('ENQUETEUR','SUPERVISEUR')")
     public ReponseResponse afficherReponseParId(@PathVariable Long id) {
 
         return reponseService.afficherReponseParId(id);
@@ -44,6 +44,27 @@ public class ReponseController {
                                            @RequestBody ReponseRequest request) {
 
         return reponseService.modifierReponse(id, request);
+    }
+
+    @GetMapping("/collecte/{collecteId}")
+    @PreAuthorize("hasAnyRole('ENQUETEUR','SUPERVISEUR')")
+    public List<ReponseResponse> afficherReponsesParCollecte(
+            @PathVariable Long collecteId) {
+
+        return reponseService.afficherReponsesParCollecte(collecteId);
+    }
+
+    @PutMapping("/{id}/commentaire")
+    @PreAuthorize("hasRole('SUPERVISEUR')")
+    public ReponseResponse ajouterCommentaire(
+            @PathVariable Long id,
+            @RequestBody String commentaire
+    ) {
+
+        return reponseService.ajouterCommentaire(
+                id,
+                commentaire
+        );
     }
 
 

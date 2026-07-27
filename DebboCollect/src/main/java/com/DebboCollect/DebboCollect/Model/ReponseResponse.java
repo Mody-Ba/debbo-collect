@@ -15,5 +15,9 @@ public class ReponseResponse {
 
     private Long champId;
 
+    private String nomChamp;
+
+    private String commentaireSuperviseur;
+
     private Long collecteId;
 }

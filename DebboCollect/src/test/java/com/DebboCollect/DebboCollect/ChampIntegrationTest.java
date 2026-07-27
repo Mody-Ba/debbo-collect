@@ -2,6 +2,7 @@ package com.DebboCollect.DebboCollect;
 import com.DebboCollect.DebboCollect.Model.ChampRequest;
 import com.DebboCollect.DebboCollect.Model.ChampResponse;
 import com.DebboCollect.DebboCollect.entity.Projet;
+import com.DebboCollect.DebboCollect.entity.TypeChamps;
 import com.DebboCollect.DebboCollect.repository.ChampRepository;
 import com.DebboCollect.DebboCollect.repository.ProjetRepository;
 import com.DebboCollect.DebboCollect.services.ChampServiceImp;
@@ -48,7 +49,7 @@ public class ChampIntegrationTest {
 
         champRequest = new ChampRequest();
 
-        champRequest.setType("Texte");
+        champRequest.setType(TypeChamps.TEXTE);
         champRequest.setQuestion("Quel est votre nom ?");
         champRequest.setPreuveObligatoire(true);
         champRequest.setProjetId(projet.getId());

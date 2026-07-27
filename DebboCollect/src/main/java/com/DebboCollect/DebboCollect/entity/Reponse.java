@@ -19,6 +19,8 @@ public class Reponse {
 
     private String valeur;
 
+    private String commentaireSuperviseur;
+
     @ManyToOne
     private Champ champ;
 

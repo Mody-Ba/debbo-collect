@@ -61,6 +61,19 @@ public class UtilisateurMapper {
 
         return response;
     }
+
+    public static UtilisateurResponse toResponse(Utilisateur utilisateur) {
+
+        UtilisateurResponse response = new UtilisateurResponse();
+
+        response.setId(utilisateur.getId());
+        response.setNom(utilisateur.getNom());
+        response.setEmail(utilisateur.getEmail());
+        response.setRole(utilisateur.getRole());
+        response.setCompteActif(utilisateur.getCompteActif());
+
+        return response;
+    }
 }
 /*Ce mapper fait 4 transformations
 Méthode	Transformation

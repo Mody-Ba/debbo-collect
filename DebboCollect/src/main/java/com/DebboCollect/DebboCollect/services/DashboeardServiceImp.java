@@ -52,10 +52,30 @@ public class DashboeardServiceImp implements DashboardService{
                     .filter(r -> r.getCollecte().getStatut() == StatusCollect.VALIDEE)
                     .count();
 
+            long validees = collecteRepository.findAll()
+                    .stream()
+                    .filter(c -> c.getProjet().getBailleur().getEmail().equals(email))
+                    .filter(c -> c.getStatut() == StatusCollect.VALIDEE)
+                    .count();
+
+            long attente = collecteRepository.findAll()
+                    .stream()
+                    .filter(c -> c.getProjet().getBailleur().getEmail().equals(email))
+                    .filter(c -> c.getStatut() == StatusCollect.EN_ATTENTE)
+                    .count();
+
+            long rejetees = collecteRepository.findAll()
+                    .stream()
+                    .filter(c -> c.getProjet().getBailleur().getEmail().equals(email))
+                    .count();
+
             return DashboardResponse.builder()
                     .nombreProjets(nombreProjets)
                     .nombreCollectes(nombreCollectes)
                     .nombreReponses(nombreReponses)
+                    .collectesValidees(validees)
+                    .collectesEnAttente(attente)
+
                     .build();
         }
 
@@ -76,10 +96,31 @@ public class DashboeardServiceImp implements DashboardService{
                 .filter(r -> r.getCollecte().getProjet().getSuperviseur().getEmail().equals(email))
                 .count();
 
+
+        long validees = collecteRepository.findAll()
+                .stream()
+                .filter(c -> c.getProjet().getSuperviseur().getEmail().equals(email))
+                .filter(c -> c.getStatut() == StatusCollect.VALIDEE)
+                .count();
+
+        long attente = collecteRepository.findAll()
+                .stream()
+                .filter(c -> c.getProjet().getSuperviseur().getEmail().equals(email))
+                .filter(c -> c.getStatut() == StatusCollect.EN_ATTENTE)
+                .count();
+
+        long rejetees = collecteRepository.findAll()
+                .stream()
+                .filter(c -> c.getProjet().getSuperviseur().getEmail().equals(email))
+                .count();
+
         return DashboardResponse.builder()
                 .nombreProjets(nombreProjets)
                 .nombreCollectes(nombreCollectes)
                 .nombreReponses(nombreReponses)
+                .collectesValidees(validees)
+                .collectesEnAttente(attente)
+
                 .build();
     }
 

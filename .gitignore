@@ -48,3 +48,10 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Uploaded photos
+uploads/
+
+# Environment variables
+.env
+.env.*
+!.env.example

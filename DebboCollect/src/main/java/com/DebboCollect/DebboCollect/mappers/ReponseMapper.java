@@ -28,8 +28,16 @@ public class ReponseMapper {
         return ReponseResponse.builder()
                 .id(reponse.getId())
                 .valeur(reponse.getValeur())
+
                 .champId(reponse.getChamp().getId())
+                .nomChamp(reponse.getChamp().getQuestion())
+
                 .collecteId(reponse.getCollecte().getId())
+
+                .commentaireSuperviseur(
+                        reponse.getCommentaireSuperviseur()
+                )
+
                 .build();
     }
 

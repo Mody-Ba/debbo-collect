@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -20,17 +21,18 @@ public class Collecte {
 
     private LocalDate dateCollecte;
 
-    private String localisation;
+    private Integer numeroCollecteProjet;
 
-    private Double latitude;
-
-    private Double longitude;
+    private LocalDateTime dateValidation;
 
     @ManyToOne
     private Utilisateur enqueteur;
 
     @ManyToOne
     private Projet projet;
+
+    @ManyToOne
+    private LotCollect lotCollecte;
 
     @OneToMany(mappedBy = "collecte")
     private List<Reponse> reponses;

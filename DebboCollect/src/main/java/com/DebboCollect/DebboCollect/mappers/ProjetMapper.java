@@ -5,6 +5,10 @@ import com.DebboCollect.DebboCollect.Model.ProjetRequest;
 import com.DebboCollect.DebboCollect.Model.ProjetResponse;
 import com.DebboCollect.DebboCollect.entity.Projet;
 import org.springframework.stereotype.Component;
+import java.util.stream.Collectors;
+import com.DebboCollect.DebboCollect.mappers.UtilisateurMapper;
+
+import static org.springframework.data.util.TypeUtils.type;
 
 @Component
 public class ProjetMapper {
@@ -21,7 +25,7 @@ public class ProjetMapper {
                 .build();
     }
 
-    public ProjetResponse toResponse(Projet projet) {
+    public   ProjetResponse toResponse(Projet projet) {
 
         return ProjetResponse.builder()
                 .id(projet.getId())
@@ -30,7 +34,30 @@ public class ProjetMapper {
                 .zoneGeographique(projet.getZoneGeographique())
                 .dateDebut(projet.getDateDebut())
                 .dateFin(projet.getDateFin())
+                .dateEnvoiBailleur(projet.getDateEnvoiBailleur())
                 .type(projet.getType())
+                .statut(projet.getStatut())
+                .nomSuperviseur(
+                        projet.getSuperviseur() != null
+                                ? projet.getSuperviseur().getNom()
+                                : null
+                )
+
+                .bailleur(
+                        projet.getBailleur() != null
+                                ? UtilisateurMapper.toResponse(projet.getBailleur())
+                                : null
+                )
+
+                .enqueteurs(
+                        projet.getEnqueteurs() != null
+                                ? projet.getEnqueteurs()
+                                  .stream()
+                                  .map(UtilisateurMapper::toResponse)
+                                  .collect(Collectors.toList())
+                                : null
+                )
+
                 .build();
     }
 

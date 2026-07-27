@@ -10,18 +10,32 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 
+@Builder
 public class Champ {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private TypeChamps type;
+
+    private String options;
 
     private String question;
 
     private boolean preuveObligatoire;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_statistique")
+    private TypeStatistique statistique;
+
+    @ManyToOne
+    @JoinColumn(name = "champ_parent_id")
+    private Champ champParent;
+
+    @Column(name = "valeur_declenchement")
+    private String valeurDeclenchement;
 
     @ManyToOne
     private Projet projet;

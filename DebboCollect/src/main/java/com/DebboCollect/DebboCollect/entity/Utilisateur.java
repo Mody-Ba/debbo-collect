@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.HashSet;
+import java.util.Set;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class Utilisateur {
     private Long id;
 
     private String nom;
-
+    @Column(nullable = false, unique = true)
     private String email;
 
     private String password;
@@ -46,6 +48,19 @@ public class Utilisateur {
 
     @ManyToOne
     private Utilisateur superviseur;
+
+    @ManyToMany
+    @JoinTable(
+            name = "superviseur_bailleur",
+            joinColumns = @JoinColumn(name = "superviseur_id"),
+            inverseJoinColumns = @JoinColumn(name = "bailleur_id")
+    )
+    private Set<Utilisateur> bailleursAssocies = new HashSet<>();
+
+    @ManyToMany(mappedBy = "bailleursAssocies")
+    private Set<Utilisateur> superviseursAssocies = new HashSet<>();
+
+
 
     @OneToMany(mappedBy = "bailleur")
     private List<Projet> projetsFinances;

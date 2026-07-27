@@ -15,13 +15,8 @@ public class CollectModel {
 
     private LocalDate dateCollecte;
 
-    private String localisation;
-
-    private Double latitude;
-
-    private Double longitude;
-
     private Long enqueteurId;
 
     private Long projetId;
+
 }

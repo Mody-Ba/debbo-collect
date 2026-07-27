@@ -11,19 +11,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CollectMapper {
-    public Collecte toEntity(CollectRequest request,
-                             Utilisateur enqueteur,
-                             Projet projet) {
+    public Collecte toEntity(
+            CollectRequest request,
+            Utilisateur enqueteur,
+            Projet projet
+    ) {
 
         return Collecte.builder()
                 .dateCollecte(request.getDateCollecte())
-                .localisation(request.getLocalisation())
-                .latitude(request.getLatitude())
-                .longitude(request.getLongitude())
                 .enqueteur(enqueteur)
                 .projet(projet)
                 .statut(StatusCollect.EN_ATTENTE)
                 .build();
+
     }
 
     public CollectResponse toResponse(Collecte collecte) {
@@ -31,13 +31,13 @@ public class CollectMapper {
         return CollectResponse.builder()
                 .id(collecte.getId())
                 .dateCollecte(collecte.getDateCollecte())
-                .localisation(collecte.getLocalisation())
-                .latitude(collecte.getLatitude())
-                .longitude(collecte.getLongitude())
+                .numeroCollecteProjet(collecte.getNumeroCollecteProjet())
                 .enqueteurId(collecte.getEnqueteur().getId())
                 .projetId(collecte.getProjet().getId())
+                .nomProjet(collecte.getProjet().getNom())
                 .statut(collecte.getStatut())
                 .build();
+
     }
 
     public CollectModel toModel(Collecte collecte) {
@@ -45,11 +45,10 @@ public class CollectMapper {
         return CollectModel.builder()
                 .id(collecte.getId())
                 .dateCollecte(collecte.getDateCollecte())
-                .localisation(collecte.getLocalisation())
-                .latitude(collecte.getLatitude())
-                .longitude(collecte.getLongitude())
                 .enqueteurId(collecte.getEnqueteur().getId())
                 .projetId(collecte.getProjet().getId())
                 .build();
+
     }
+
 }

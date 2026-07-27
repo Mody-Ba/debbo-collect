@@ -1,9 +1,6 @@
 package com.DebboCollect.DebboCollect.services;
 
-import com.DebboCollect.DebboCollect.Model.CollectRequest;
-import com.DebboCollect.DebboCollect.Model.CollectResponse;
-import com.DebboCollect.DebboCollect.Model.CollectRequest;
-import com.DebboCollect.DebboCollect.Model.CollectResponse;
+import com.DebboCollect.DebboCollect.Model.*;
 
 import java.util.List;
 
@@ -20,7 +17,11 @@ public interface CollectService {
     void supprimerCollecte(Long id);
 
     CollectResponse validerCollecte(Long id);
+
     CollectResponse demanderRevision(Long id);
+
+    CollectResponse envoyerCollecte(Long id);
+
 
 
 }

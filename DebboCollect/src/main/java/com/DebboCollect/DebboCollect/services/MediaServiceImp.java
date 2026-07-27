@@ -48,6 +48,15 @@ public class MediaServiceImp implements MediaService {
     }
 
     @Override
+    public List<MediaResponse> getMediaByReponse(Long reponseId) {
+
+        return mediaRepository.findByReponseId(reponseId)
+                .stream()
+                .map(mediaMapper::toResponse)
+                .toList();
+    }
+
+    @Override
     public MediaResponse afficherMediaParId(Long id) {
 
         Media media = mediaRepository.findById(id)
@@ -101,19 +110,31 @@ public class MediaServiceImp implements MediaService {
 
         try {
 
-            String fileName = file.getOriginalFilename();
+            String extension = "";
 
-            Path path = Paths.get("uploads/" + fileName);
+            String originalName = file.getOriginalFilename();
 
-            Files.createDirectories(path.getParent());
+            if (originalName != null && originalName.contains(".")) {
+                extension = originalName.substring(originalName.lastIndexOf("."));
+            }
 
-            Files.write(path, file.getBytes());
+            String fileName = java.util.UUID.randomUUID() + extension;
 
-            return "Fichier uploadé : " + fileName;
+            Path uploadPath = Paths.get("uploads");
+
+            Files.createDirectories(uploadPath);
+
+            Path filePath = uploadPath.resolve(fileName);
+
+            Files.write(filePath, file.getBytes());
+
+            return "/uploads/" + fileName;
 
         } catch (Exception e) {
 
-            throw new RuntimeException("Erreur upload fichier");
+            e.printStackTrace();
+
+            throw new RuntimeException("Erreur upload fichier", e);
         }
     }
 }

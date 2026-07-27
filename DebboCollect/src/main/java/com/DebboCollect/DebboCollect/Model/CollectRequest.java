@@ -13,14 +13,8 @@ import java.time.LocalDate;
 public class CollectRequest {
     @NotNull(message = "La date de collecte est obligatoire")
     private LocalDate dateCollecte;
-    @NotNull(message = "La localisation est obligatoire")
-    private String localisation;
 
-    private Double latitude;
-
-    private Double longitude;
-    @NotNull(message = "L enqueteur est obligatoire")
-    private Long enqueteurId;
     @NotNull(message = "Le projet est obligatoire")
     private Long projetId;
+
 }

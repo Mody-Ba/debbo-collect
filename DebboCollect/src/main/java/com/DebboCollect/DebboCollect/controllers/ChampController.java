@@ -52,4 +52,11 @@ public class ChampController {
 
         champService.supprimerChamp(id);
     }
+    @GetMapping("/projet/{projetId}")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR','ENQUETEUR')")
+    public List<ChampResponse> afficherChampsParProjet(
+            @PathVariable Long projetId) {
+
+        return champService.afficherChampsParProjet(projetId);
+    }
 }

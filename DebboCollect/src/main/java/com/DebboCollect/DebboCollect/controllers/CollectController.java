@@ -24,14 +24,15 @@ public class CollectController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR','ENQUETEUR')")
     public List<CollectResponse> afficherToutesLesCollectes() {
 
         return collecteService.afficherToutesLesCollectes();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('SUPERVISEUR')")
+    @PreAuthorize("hasAnyRole('SUPERVISEUR','ENQUETEUR')")
+
     public CollectResponse afficherCollecteParId(@PathVariable Long id) {
 
         return collecteService.afficherCollecteParId(id);
@@ -64,6 +65,13 @@ public class CollectController {
     public CollectResponse demanderRevision(@PathVariable Long id) {
 
         return collecteService.demanderRevision(id);
+    }
+
+    @PutMapping("/{id}/envoyer")
+    @PreAuthorize("hasRole('ENQUETEUR')")
+    public CollectResponse envoyerCollecte(@PathVariable Long id) {
+
+        return collecteService.envoyerCollecte(id);
     }
 
 

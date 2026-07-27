@@ -3,6 +3,7 @@ import com.DebboCollect.DebboCollect.Model.ChampRequest;
 import com.DebboCollect.DebboCollect.Model.ChampResponse;
 import com.DebboCollect.DebboCollect.entity.Champ;
 import com.DebboCollect.DebboCollect.entity.Projet;
+import com.DebboCollect.DebboCollect.entity.TypeChamps;
 import com.DebboCollect.DebboCollect.mappers.ChampMapper;
 import com.DebboCollect.DebboCollect.repository.ChampRepository;
 import com.DebboCollect.DebboCollect.repository.ProjetRepository;
@@ -47,20 +48,20 @@ public class ChampServiceImplTest {
 
         champ = new Champ();
         champ.setId(1L);
-        champ.setType("Texte");
+        champ.setType(TypeChamps.TEXTE);
         champ.setQuestion("Quel est votre nom ?");
         champ.setPreuveObligatoire(true);
         champ.setProjet(projet);
 
         champRequest = new ChampRequest();
-        champRequest.setType("Texte");
+        champRequest.setType(TypeChamps.TEXTE);
         champRequest.setQuestion("Quel est votre nom ?");
         champRequest.setPreuveObligatoire(true);
         champRequest.setProjetId(1L);
 
         champResponse = new ChampResponse();
         champResponse.setId(1L);
-        champResponse.setType("Texte");
+        champResponse.setType(TypeChamps.TEXTE);
         champResponse.setQuestion("Quel est votre nom ?");
         champResponse.setPreuveObligatoire(true);
     }

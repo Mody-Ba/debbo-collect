@@ -8,6 +8,7 @@ import com.DebboCollect.DebboCollect.entity.StatusCollect;
 import com.DebboCollect.DebboCollect.entity.Utilisateur;
 import com.DebboCollect.DebboCollect.mappers.CollectMapper;
 import com.DebboCollect.DebboCollect.repository.CollectRepository;
+import com.DebboCollect.DebboCollect.repository.LotCollecteRepository;
 import com.DebboCollect.DebboCollect.repository.ProjetRepository;
 import com.DebboCollect.DebboCollect.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,20 +27,36 @@ public class CollectServiceImp implements CollectService {
     private final UtilisateurRepository utilisateurRepository;
     private final ProjetRepository projetRepository;
     private final CollectMapper collectMapper;
+    private final LotCollecteRepository lotCollecteRepository;
 
     @Override
     public CollectResponse creerCollecte(CollectRequest request) {
 
-        Utilisateur enqueteur = utilisateurRepository.findById(request.getEnqueteurId())
-                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        Utilisateur enqueteur = utilisateurRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("Utilisateur non trouvé"));
 
         Projet projet = projetRepository.findById(request.getProjetId())
-                .orElseThrow(() -> new RuntimeException("Projet non trouvé"));
+                .orElseThrow(() ->
+                        new RuntimeException("Projet non trouvé"));
 
-        Collecte collecte = collectMapper.toEntity(request, enqueteur, projet);
-        collecte.setStatut(StatusCollect.EN_ATTENTE);
+        Collecte collecte =
+                collectMapper.toEntity(request, enqueteur, projet);
 
-        Collecte savedCollecte = collectRepository.save(collecte);
+        collecte.setStatut(StatusCollect.ENREGISTREE);
+
+        Integer numeroCollecte =
+                collectRepository.countByProjetId(projet.getId()) + 1;
+
+        collecte.setNumeroCollecteProjet(numeroCollecte);
+
+        Collecte savedCollecte =
+                collectRepository.save(collecte);
 
         return collectMapper.toResponse(savedCollecte);
     }
@@ -62,6 +80,19 @@ public class CollectServiceImp implements CollectService {
             return collectRepository.findAll()
                     .stream()
                     .filter(c -> c.getEnqueteur().getEmail().equals(email))
+                    .map(collectMapper::toResponse)
+                    .toList();
+        }
+        if (role.equals("ROLE_SUPERVISEUR")) {
+
+            return collectRepository.findAll()
+                    .stream()
+                    .filter(c ->
+                            c.getProjet()
+                                    .getSuperviseur()
+                                    .getEmail()
+                                    .equals(email)
+                    )
                     .map(collectMapper::toResponse)
                     .toList();
         }
@@ -114,14 +145,12 @@ public class CollectServiceImp implements CollectService {
             );
         }
 
-        Utilisateur enqueteur = utilisateurRepository.findById(request.getEnqueteurId())
+        Utilisateur enqueteur = utilisateurRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
         Projet projet = projetRepository.findById(request.getProjetId())
                 .orElseThrow(() -> new RuntimeException("Projet non trouvé"));
 
         collecte.setDateCollecte(request.getDateCollecte());
-        collecte.setLocalisation(request.getLocalisation());
         collecte.setEnqueteur(enqueteur);
         collecte.setProjet(projet);
 
@@ -142,7 +171,24 @@ public class CollectServiceImp implements CollectService {
         Collecte collecte = collectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Collecte introuvable"));
 
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        if (!collecte.getProjet()
+                .getSuperviseur()
+                .getEmail()
+                .equals(email)) {
+
+            throw new RuntimeException(
+                    "Vous ne pouvez pas valider cette collecte"
+            );
+        }
+
         collecte.setStatut(StatusCollect.VALIDEE);
+
+        collecte.setDateValidation(LocalDateTime.now());
 
         return collectMapper.toResponse(
                 collectRepository.save(collecte)
@@ -154,12 +200,46 @@ public class CollectServiceImp implements CollectService {
         Collecte collecte = collectRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Collecte introuvable"));
 
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        if (!collecte.getProjet()
+                .getSuperviseur()
+                .getEmail()
+                .equals(email)) {
+
+            throw new RuntimeException(
+                    "Vous ne pouvez pas demander une révision"
+            );
+        };
+
+
         collecte.setStatut(StatusCollect.EN_REVISION);
 
         return collectMapper.toResponse(
                 collectRepository.save(collecte)
         );
     }
+
+    @Override
+    public CollectResponse envoyerCollecte(Long id) {
+
+        Collecte collecte = collectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Collecte introuvable"));
+
+        if (collecte.getStatut() == StatusCollect.EN_ATTENTE) {
+            throw new RuntimeException("Collecte déjà envoyée");
+        }
+
+        collecte.setStatut(StatusCollect.EN_ATTENTE);
+
+        return collectMapper.toResponse(
+                collectRepository.save(collecte)
+        );
+    }
+
 
 
 }

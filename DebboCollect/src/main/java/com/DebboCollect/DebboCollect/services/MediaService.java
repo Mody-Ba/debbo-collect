@@ -18,4 +18,6 @@ public interface MediaService {
 
     void supprimerMedia(Long id);
     String uploadFile(MultipartFile file);
+
+    List<MediaResponse> getMediaByReponse(Long reponseId);
 }

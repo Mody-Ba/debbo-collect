@@ -3,6 +3,7 @@ package com.DebboCollect.DebboCollect.configs;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.security.Key;
 import java.util.Date;
@@ -10,9 +11,8 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    private final String jwtSecret =
-            "DebboCollectSecretKeyDebboCollectSecretKey";
-
+    @Value("${JWT_SECRET}")
+    private String jwtSecret;
     private final long jwtExpirationMs =
             86400000;
 

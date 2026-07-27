@@ -75,12 +75,75 @@ public class ReponseServiceImp implements ReponseService {
                 .orElseThrow(() -> new RuntimeException("Collecte non trouvée"));
 
         reponse.setValeur(request.getValeur());
+        reponse.setCommentaireSuperviseur(null);
         reponse.setChamp(champ);
         reponse.setCollecte(collecte);
 
+
+        collecte.setStatut(StatusCollect.ENVOYEE);
+
+        reponse.setCommentaireSuperviseur(null);
+
+        collecteRepository.save(collecte);
+
         Reponse updatedReponse = reponseRepository.save(reponse);
+        boolean resteCommentaires =
+                reponseRepository
+                        .findByCollecteIdOrderByChampIdAsc(
+                                collecte.getId()
+                        )
+                        .stream()
+                        .anyMatch(r ->
+                                r.getCommentaireSuperviseur() != null &&
+                                        !r.getCommentaireSuperviseur().isBlank()
+                        );
+
+        if (!resteCommentaires) {
+
+            collecte.setStatut(
+                    StatusCollect.ENVOYEE
+            );
+
+            collecteRepository.save(
+                    collecte
+            );
+        }
 
         return reponseMapper.toResponse(updatedReponse);
+    }
+
+    @Override
+    public void supprimerReponse(Long id) {
+
+        reponseRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ReponseResponse> afficherReponsesParCollecte(Long collecteId) {
+
+        return reponseRepository
+                .findByCollecteIdOrderByChampIdAsc(collecteId)
+                .stream()
+                .map(reponseMapper::toResponse)
+                .toList();
+    }
+
+    @Override
+    public ReponseResponse ajouterCommentaire(
+            Long id,
+            String commentaire
+    ) {
+
+        Reponse reponse = reponseRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Réponse non trouvée"));
+
+        reponse.setCommentaireSuperviseur(commentaire);
+
+        Reponse savedReponse =
+                reponseRepository.save(reponse);
+
+        return reponseMapper.toResponse(savedReponse);
     }
 
 

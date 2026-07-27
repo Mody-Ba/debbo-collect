@@ -54,9 +54,20 @@ public class MediaController {
 
         mediaService.supprimerMedia(id);
     }
+
+
+    @GetMapping("/reponse/{reponseId}")
+    public List<MediaResponse> getMediaParReponse(
+            @PathVariable Long reponseId
+    ) {
+        return mediaService.getMediaByReponse(reponseId);
+    }
+
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ENQUETEUR')")
     public String uploadMedia(@RequestParam("file") MultipartFile file) {
+
+        System.out.println("===== UPLOAD APPELE =====");
 
         return mediaService.uploadFile(file);
     }

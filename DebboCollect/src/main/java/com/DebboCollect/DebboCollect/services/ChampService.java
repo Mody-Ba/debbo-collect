@@ -16,4 +16,6 @@ public interface ChampService {
     ChampResponse modifierChamp(Long id, ChampRequest request);
 
     void supprimerChamp(Long id);
+
+    List<ChampResponse> afficherChampsParProjet(Long projetId);
 }

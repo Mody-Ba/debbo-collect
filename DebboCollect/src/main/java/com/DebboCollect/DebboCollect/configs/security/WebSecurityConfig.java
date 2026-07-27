@@ -75,7 +75,11 @@ public class WebSecurityConfig {
 
                                         "/swagger-ui/**",
 
-                                        "/v3/api-docs/**"
+                                        "/v3/api-docs/**",
+
+                                        "/uploads/**"
+
+
 
                                 ).permitAll()
 
