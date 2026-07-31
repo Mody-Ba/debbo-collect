@@ -111,7 +111,6 @@ public class MediaServiceImp implements MediaService {
         try {
 
             String extension = "";
-
             String originalName = file.getOriginalFilename();
 
             if (originalName != null && originalName.contains(".")) {
@@ -121,19 +120,17 @@ public class MediaServiceImp implements MediaService {
             String fileName = java.util.UUID.randomUUID() + extension;
 
             Path uploadPath = Paths.get("uploads");
-
             Files.createDirectories(uploadPath);
 
             Path filePath = uploadPath.resolve(fileName);
 
-            Files.write(filePath, file.getBytes());
+            file.transferTo(filePath.toFile()); // remplace Files.write(filePath, file.getBytes())
 
             return "/uploads/" + fileName;
 
         } catch (Exception e) {
 
             e.printStackTrace();
-
             throw new RuntimeException("Erreur upload fichier", e);
         }
     }
