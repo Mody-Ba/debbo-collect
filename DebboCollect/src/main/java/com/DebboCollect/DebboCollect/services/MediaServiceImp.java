@@ -8,14 +8,14 @@ import com.DebboCollect.DebboCollect.entity.StatusCollect;
 import com.DebboCollect.DebboCollect.mappers.MediaMapper;
 import com.DebboCollect.DebboCollect.repository.MediaRepository;
 import com.DebboCollect.DebboCollect.repository.ReponseRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ public class MediaServiceImp implements MediaService {
     private final MediaRepository mediaRepository;
     private final ReponseRepository reponseRepository;
     private final MediaMapper mediaMapper;
+    private final Cloudinary cloudinary;
 
     @Override
     public MediaResponse creerMedia(MediaRequest request) {
@@ -105,28 +106,21 @@ public class MediaServiceImp implements MediaService {
 
         mediaRepository.delete(media);
     }
+
     @Override
     public String uploadFile(MultipartFile file) {
 
         try {
 
-            String extension = "";
-            String originalName = file.getOriginalFilename();
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(
+                    file.getBytes(),
+                    ObjectUtils.asMap(
+                            "resource_type", "auto",
+                            "folder", "debbocollect"
+                    )
+            );
 
-            if (originalName != null && originalName.contains(".")) {
-                extension = originalName.substring(originalName.lastIndexOf("."));
-            }
-
-            String fileName = java.util.UUID.randomUUID() + extension;
-
-            Path uploadPath = Paths.get("uploads");
-            Files.createDirectories(uploadPath);
-
-            Path filePath = uploadPath.resolve(fileName);
-
-            file.transferTo(filePath.toFile()); // remplace Files.write(filePath, file.getBytes())
-
-            return "/uploads/" + fileName;
+            return (String) uploadResult.get("secure_url");
 
         } catch (Exception e) {
 
