@@ -87,6 +87,14 @@ public class UtilisateurServiceImp implements UtilisateurService {
             }
         }
 
+        String emailNormalized = model.getEmail()
+                .trim()
+                .toLowerCase();
+
+        if (utilisateurRepository.findByEmailIgnoreCase(emailNormalized).isPresent()) {
+            throw new RuntimeException("Un utilisateur avec cet email existe déjà");
+        }
+
         model.setCompteActif(false);
 
 
