@@ -304,3 +304,14 @@ ALTER TABLE champ
     ADD CONSTRAINT fk_champ_parent
         FOREIGN KEY (champ_parent_id)
             REFERENCES champ(id);
+
+-- changeset Mody:add-admin2-account
+INSERT INTO utilisateur (nom, prenom, email, password, role, compte_actif)
+VALUES (
+           'Administrateur2',
+           'Admin',
+           'admin2@gmail.com',
+           '$2b$10$h/tVxYlNMoki1lnbrelzeunK3TDOlD9fqQO6t3KvLKmxzAsYqXjI6',
+           'ADMIN',
+           true
+       );
